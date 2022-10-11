@@ -1,13 +1,14 @@
 package main
 
 import (
+	"desafio-goweb-milagrosSassenus/cmd/internal/domain"
+	"desafio-goweb-milagrosSassenus/cmd/internal/tickets"
+	"desafio-goweb-milagrosSassenus/cmd/server/handler"
 	"encoding/csv"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"os"
 	"strconv"
-
-	"desafio-go-web/internal/domain"
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -18,12 +19,20 @@ func main() {
 		panic("Couldn't load tickets")
 	}
 
+	repo := tickets.NewRepository(list)
+	s := tickets.NewService(repo)
+	h := handler.NewTicket(s)
+
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) { c.String(200, "pong") })
+
 	// Rutas a desarollar:
-	
+
 	// GET - “/ticket/getByCountry/:dest”
+	r.GET("/ticket/getByCountry/:dest", h.GetTicketsByCountry())
 	// GET - “/ticket/getAverage/:dest”
+	r.GET("/ticket/getAverage/:dest", h.AverageDestination())
+
 	if err := r.Run(); err != nil {
 		panic(err)
 	}

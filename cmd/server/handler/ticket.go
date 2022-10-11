@@ -1,14 +1,19 @@
 package handler
 
 import (
-	"net/http"
-
-	"desafio-go-web/internal/tickets"
+	"desafio-goweb-milagrosSassenus/cmd/internal/tickets"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type Service struct {
 	service tickets.Service
+}
+
+func NewTicket(s tickets.Service) *Service {
+	return &Service{
+		service: s,
+	}
 }
 
 func NewService(s tickets.Service) *Service {

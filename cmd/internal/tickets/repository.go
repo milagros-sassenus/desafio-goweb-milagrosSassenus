@@ -2,8 +2,8 @@ package tickets
 
 import (
 	"context"
+	"desafio-goweb-milagrosSassenus/cmd/internal/domain"
 	"fmt"
-
 )
 
 type Repository interface {
@@ -32,17 +32,17 @@ func (r *repository) GetAll(ctx context.Context) ([]domain.Ticket, error) {
 
 func (r *repository) GetTicketByDestination(ctx context.Context, destination string) ([]domain.Ticket, error) {
 
-	var ticketsDest []domain.Ticket
+	var countries []domain.Ticket
 
 	if len(r.db) == 0 {
-		return []domain.Ticket{}, fmt.Errorf("empty list of tickets")
+		return []domain.Ticket{}, fmt.Errorf("error : no tickets")
 	}
 
 	for _, t := range r.db {
 		if t.Country == destination {
-			ticketsDest = append(ticketsDest, t)
+			countries = append(countries, t)
 		}
 	}
 
-	return ticketsDest, nil
+	return countries, nil
 }
