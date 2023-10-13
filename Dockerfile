@@ -1,19 +1,15 @@
-# seteamos la imagen base de nuestro container
-# al ser esta una aplicación de Golang, usamos eso
+FROM golang:1.19.0
 
-FROM golang:1.20 
+WORKDIR /usr/src/app
 
-WORKDIR /app
+# Copy only necessary files and directories
+COPY go.mod go.sum ./
+RUN go mod download
 
-COPY go.mod .
-COPY main.go .
+# Copy the rest of the application
+COPY . .
 
-#instalamos dependencias
+# Build the application
+RUN go build -o app ./cmd/main.go
 
-RUN go get
-
-# usamos el comando para construir el container y lo dejamos en bin
-
-RUN go build -o bin .
-
-ENTRYPOINT [ "/app/bin" ]
+CMD ["./app"]

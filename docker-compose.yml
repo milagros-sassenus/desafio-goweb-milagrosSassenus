@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/usr/src/app
+      - ./tickets.csv:/usr/src/tickets.csv
+    command: ["./app"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8080/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
